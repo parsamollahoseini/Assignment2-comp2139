@@ -22,44 +22,45 @@ namespace SmartInventory.Controllers
         }
 
         // GET: /Product
-        public async Task<IActionResult> Index(string searchString, int? categoryId, decimal? minPrice, decimal? maxPrice, string sortOrder)
+        public async Task<IActionResult> Index(
+            string searchString = null, 
+            int? categoryId = null, 
+            decimal? minPrice = null, 
+            decimal? maxPrice = null, 
+            string sortOrder = null)
         {
-            // Start with all products including their Category
-            var products = _context.Products.Include(p => p.Category).AsQueryable();
+            // Explicitly start with a queryable of products
+            IQueryable<Product> productsQuery = _context.Products.Include(p => p.Category);
 
             // Apply filtering
             if (!string.IsNullOrEmpty(searchString))
-                products = products.Where(p => p.Name.Contains(searchString));
+                productsQuery = productsQuery.Where(p => p.Name.Contains(searchString));
+    
             if (categoryId.HasValue && categoryId.Value > 0)
-                products = products.Where(p => p.CategoryId == categoryId);
+                productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
+    
             if (minPrice.HasValue)
-                products = products.Where(p => p.Price >= minPrice);
+                productsQuery = productsQuery.Where(p => p.Price >= minPrice);
+    
             if (maxPrice.HasValue)
-                products = products.Where(p => p.Price <= maxPrice);
+                productsQuery = productsQuery.Where(p => p.Price <= maxPrice);
 
             // Apply sorting
-            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["PriceSortParam"] = sortOrder == "Price" ? "price_desc" : "Price";
-            switch (sortOrder)
+            productsQuery = sortOrder switch
             {
-                case "name_desc":
-                    products = products.OrderByDescending(p => p.Name);
-                    break;
-                case "Price":
-                    products = products.OrderBy(p => p.Price);
-                    break;
-                case "price_desc":
-                    products = products.OrderByDescending(p => p.Price);
-                    break;
-                default:
-                    products = products.OrderBy(p => p.Name);
-                    break;
-            }
+                "name_desc" => productsQuery.OrderByDescending(p => p.Name),
+                "Price" => productsQuery.OrderBy(p => p.Price),
+                "price_desc" => productsQuery.OrderByDescending(p => p.Price),
+                _ => productsQuery.OrderBy(p => p.Name)
+            };
 
+            // Populate categories
             ViewBag.Categories = new SelectList(_context.Categories, "CategoryId", "Name");
 
-            var productList = await products.ToListAsync();
-            Console.WriteLine("Index action: Product count = " + productList.Count);
+            // Execute the query and get the list
+            var productList = await productsQuery.ToListAsync();
+
+            // Explicitly return the view with the product list
             return View(productList);
         }
 

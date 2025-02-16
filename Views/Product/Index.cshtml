@@ -3,33 +3,88 @@
 ViewData["Title"] = "Products";
 }
 
-<h2>Products</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Low Stock Threshold</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var product in Model)
+<div class="container">
+    <h2>Product Inventory</h2>
+
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" name="searchString" class="form-control" placeholder="Search by product name" />
+            </div>
+            <div class="col-md-3">
+                <select name="categoryId" class="form-control">
+                    <option value="">All Categories</option>
+                    @if (ViewBag.Categories != null)
+                    {
+                    foreach (var category in ViewBag.Categories)
+                    {
+                    <option value="@category.Value">@category.Text</option>
+                    }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="number" name="minPrice" class="form-control" placeholder="Min Price" />
+            </div>
+            <div class="col-md-2">
+                <input type="number" name="maxPrice" class="form-control" placeholder="Max Price" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-3">
+                <select name="sortOrder" class="form-control">
+                    <option value="">Sort By</option>
+                    <option value="name">Name (A-Z)</option>
+                    <option value="name_desc">Name (Z-A)</option>
+                    <option value="Price">Price (Low to High)</option>
+                    <option value="price_desc">Price (High to Low)</option>
+                </select>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity in Stock</th>
+            <th>Low Stock Threshold</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in Model)
+        {
+        <tr>
+            <td>@product.Name</td>
+            <td>@product.Category?.Name</td>
+            <td>@product.Price.ToString("C")</td>
+            <td>
+                @product.QuantityInStock
+                @if (product.QuantityInStock <= product.LowStockThreshold)
+                {
+                <span class="badge bg-warning text-dark">Low Stock</span>
+                }
+            </td>
+            <td>@product.LowStockThreshold</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-sm btn-primary">Edit</a>
+                <a asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        }
+        </tbody>
+    </table>
+
+    @if (!Model.Any())
     {
-    <tr>
-        <td>@product.Name</td>
-        <td>@product.Category?.Name</td>
-        <td>@product.Price</td>
-        <td>@product.QuantityInStock</td>
-        <td>@product.LowStockThreshold</td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@product.ProductId">Edit</a> |
-            <a asp-action="Delete" asp-route-id="@product.ProductId">Delete</a>
-        </td>
-    </tr>
+    <div class="alert alert-info">No products found.</div>
     }
-    </tbody>
-</table>
-<a asp-action="Create" class="btn btn-primary">Add New Product</a>
+
+    <a asp-action="Create" class="btn btn-success">Add New Product</a>
+</div>
