@@ -1,8 +1,123 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home-dashboard">
+    <!-- Hero Section -->
+    <div class="hero-section bg-primary text-white p-5 rounded-3 mb-4">
+        <h1>Welcome to SmartInventory</h1>
+        <p class="lead">An efficient inventory management system for your business</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card bg-white shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-box-open fa-2x text-primary mb-2"></i>
+                    <h3 class="card-title">@ViewBag.TotalProducts</h3>
+                    <p class="card-text text-muted">Total Products</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card bg-white shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-tags fa-2x text-success mb-2"></i>
+                    <h3 class="card-title">@ViewBag.TotalCategories</h3>
+                    <p class="card-text text-muted">Product Categories</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card bg-white shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
+                    <h3 class="card-title">@ViewBag.LowStockProducts</h3>
+                    <p class="card-text text-muted">Low Stock Alerts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-boxes text-primary me-2"></i>Inventory Management</h5>
+                    <p class="card-text">View, add, edit, and manage your product inventory all in one place.</p>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-primary">
+                        Manage Products
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-shopping-cart text-success me-2"></i>Order Management</h5>
+                    <p class="card-text">Create and track orders easily with our streamlined order system.</p>
+                    <a asp-controller="Order" asp-action="Create" class="btn btn-success">
+                        Place New Order
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Key Features</h2>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="feature-item text-center p-3">
+                <i class="fas fa-search fa-2x text-primary mb-3"></i>
+                <h4>Smart Search</h4>
+                <p>Quickly find products with our advanced search functionality</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="feature-item text-center p-3">
+                <i class="fas fa-chart-line fa-2x text-primary mb-3"></i>
+                <h4>Stock Tracking</h4>
+                <p>Real-time monitoring of your inventory levels</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="feature-item text-center p-3">
+                <i class="fas fa-bell fa-2x text-primary mb-3"></i>
+                <h4>Low Stock Alerts</h4>
+                <p>Never run out of stock with automatic alerts</p>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Add this CSS to your site.css file -->
+<style>
+.home-dashboard .card {
+    transition: transform 0.2s;
+    border: none;
+}
+
+.home-dashboard .card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.feature-item:hover {
+    background: #e9ecef;
+    transform: translateY(-5px);
+}
+
+.hero-section {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+}
+</style>

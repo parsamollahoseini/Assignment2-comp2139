@@ -1,0 +1,79 @@
+@model IEnumerable<SmartInventory.Models.Product>
+@{
+ViewData["Title"] = "Place Order";
+}
+
+<div class="container">
+    <h2>Place an Order</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label>Guest Name</label>
+            <input type="text" name="guestName" class="form-control" required placeholder="Enter your full name" />
+        </div>
+        <div class="form-group">
+            <label>Guest Email</label>
+            <input type="email" name="guestEmail" class="form-control" required placeholder="Enter your email address" />
+        </div>
+
+        <h3>Select Products and Quantities</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Available Quantity</th>
+                <th>Order Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var product in Model)
+            {
+            <tr>
+                <td>
+                    @product.Name
+                    <input type="hidden" name="productIds" value="@product.ProductId" />
+                </td>
+                <td>$@product.Price.ToString("F2")</td>
+                <td>
+                    @product.QuantityInStock
+                    @if (product.QuantityInStock <= product.LowStockThreshold)
+                    {
+                    <span class="text-danger">(Low Stock)</span>
+                    }
+                </td>
+                <td>
+                    <input type="number"
+                           name="quantities"
+                           value="0"
+                           min="0"
+                           max="@product.QuantityInStock"
+                           class="form-control" />
+                </td>
+            </tr>
+            }
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const quantityInputs = document.querySelectorAll('input[name="quantities"]');
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const max = parseInt(this.max);
+                const value = parseInt(this.value);
+
+                if (value > max) {
+                    this.value = max;
+                    alert(`Maximum available quantity is ${max}`);
+                } else if (value < 0) {
+                    this.value = 0;
+                }
+            });
+        });
+    });
+</script>

@@ -1,31 +1,26 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SmartInventory.Models;
+using SmartInventory.Data;
+using System.Linq;
+using SmartInventory.Data;
 
-namespace SmartInventory.Controllers;
-
-public class HomeController : Controller
+namespace SmartInventory.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        private readonly ApplicationDbContext _context;
+        
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        
+        public IActionResult Index()
+        {
+            // Summary information for the homepage
+            ViewBag.TotalProducts = _context.Products.Count();
+            ViewBag.TotalCategories = _context.Categories.Count();
+            ViewBag.LowStockProducts = _context.Products.Count(p => p.QuantityInStock < p.LowStockThreshold);
+            return View();
+        }
     }
 }

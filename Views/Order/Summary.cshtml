@@ -1,0 +1,40 @@
+@model SmartInventory.Models.Order
+@{
+ViewData["Title"] = "Order Summary";
+}
+
+<h2>Order Summary</h2>
+
+<div>
+    <p><strong>Order ID:</strong> @Model.OrderId</p>
+    <p><strong>Guest Name:</strong> @Model.GuestName</p>
+    <p><strong>Guest Email:</strong> @Model.GuestEmail</p>
+    <p><strong>Order Date:</strong> @Model.OrderDate</p>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Product</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var detail in Model.OrderDetails)
+    {
+    <tr>
+        <td>@detail.Product.Name</td>
+        <td>@detail.UnitPrice</td>
+        <td>@detail.Quantity</td>
+        <td>@(detail.UnitPrice * detail.Quantity)</td>
+    </tr>
+    }
+    </tbody>
+</table>
+
+<p><strong>Total Price:</strong> @Model.TotalPrice</p>
+
+<!-- Back to Order button -->
+<a asp-action="Create" class="btn btn-primary">Back to Order</a>
