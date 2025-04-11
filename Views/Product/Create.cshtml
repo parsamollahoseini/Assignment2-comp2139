@@ -5,8 +5,20 @@ ViewData["Title"] = "Create Product";
 
 <h2>Create Product</h2>
 
-<form asp-action="Create" method="post">
+@* Container for AJAX messages *@
+<div id="messageContainer" style="margin-bottom: 15px;"></div>
+
+@* Add a loader element (hidden by default) *@
+<div id="formLoader" style="display: none; text-align: center; padding: 10px;">
+    <div class="spinner-border spinner-border-sm text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<form id="createProductForm" asp-action="Create" method="post">
     @* Anti-forgery token is automatically included by the form tag helper *@
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div> @* Display model-level errors *@
+
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
@@ -33,10 +45,81 @@ ViewData["Title"] = "Create Product";
         <span asp-validation-for="LowStockThreshold" class="text-danger"></span>
     </div>
     <div class="form-group mt-3">
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button id="createSubmitButton" type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     </div>
 </form>
 
 @section Scripts {
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#createProductForm').on('submit', function (e) {
+                e.preventDefault(); // Prevent default submission
+
+                var form = $(this);
+                var url = form.attr('action');
+                var formData = form.serialize();
+                var $messageContainer = $('#messageContainer');
+                var $loader = $('#formLoader');
+                var $submitButton = $('#createSubmitButton');
+
+                // Basic client-side check if form is valid (relies on unobtrusive validation)
+                if (!form.valid()) {
+                    // Highlight errors if needed, but unobtrusive validation should handle it
+                    $messageContainer.html('<div class="alert alert-warning">Please correct the errors below.</div>').show();
+                    return;
+                }
+
+                // Clear previous messages and show loader
+                $messageContainer.hide().html('');
+                $loader.show();
+                $submitButton.prop('disabled', true); // Disable button during request
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest", // Identify as AJAX
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() // Include anti-forgery token
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Success: show message, clear form
+                            $messageContainer.html('<div class="alert alert-success">' + response.message + '</div>').show();
+                            form.trigger('reset'); // Clear the form fields
+                            // Optionally redirect after a delay or provide a link
+                            // setTimeout(function() { window.location.href = '@Url.Action("Index")'; }, 2000);
+                        } else {
+                            // Failure (validation errors from server or general error)
+                            var errorHtml = '<div class="alert alert-danger"><ul>';
+                            if (response.errors) {
+                                $.each(response.errors, function (key, value) {
+                                     // Display field-specific errors near the fields (optional enhancement)
+                                     // For now, list all errors in the message container
+                                     $.each(value, function(i, errorMsg) {
+                                         errorHtml += '<li>' + errorMsg + '</li>';
+                                     });
+                                });
+                            } else {
+                                errorHtml += '<li>An unknown error occurred.</li>';
+                            }
+                            errorHtml += '</ul></div>';
+                            $messageContainer.html(errorHtml).show();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX POST Error:", status, error, xhr.responseText);
+                        $messageContainer.html('<div class="alert alert-danger">An error occurred while submitting the form. Please try again.</div>').show();
+                    },
+                    complete: function () {
+                        // Hide loader and re-enable button
+                        $loader.hide();
+                        $submitButton.prop('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
 }

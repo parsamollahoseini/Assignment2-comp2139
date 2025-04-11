@@ -7,7 +7,7 @@ public class Product
     public int ProductId { get; set; }
 
     [Required]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty; // Initialize non-nullable string
 
     [Required(ErrorMessage = "Please select a category")]
     [Display(Name = "Category")]
@@ -26,5 +26,5 @@ public class Product
     public int LowStockThreshold { get; set; }
 
     // Navigation property
-    public virtual Category Category { get; set; }
+    public virtual Category Category { get; set; } = null!; // Initialize non-nullable navigation property
 }

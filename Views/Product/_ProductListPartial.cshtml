@@ -1,0 +1,49 @@
+@model IEnumerable<SmartInventory.Models.Product>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Quantity in Stock</th>
+        <th>Low Stock Threshold</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var product in Model)
+    {
+    <tr>
+        <td>@product.Name</td>
+        <td>@product.Category?.Name</td>
+        <td>@product.Price.ToString("C")</td>
+        <td>
+            @product.QuantityInStock
+            @if (product.QuantityInStock <= product.LowStockThreshold)
+            {
+            <span class="badge bg-warning text-dark">Low Stock</span>
+            }
+        </td>
+        <td>@product.LowStockThreshold</td>
+        <td>
+            @* Add check for Admin role before showing Edit/Delete buttons *@
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-sm btn-primary">Edit</a>
+                <a asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-sm btn-danger">Delete</a>
+            }
+            else
+            {
+                 <span>N/A</span> @* Or show details button for regular users *@
+            }
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+<div class="alert alert-info">No products found matching your criteria.</div>
+}

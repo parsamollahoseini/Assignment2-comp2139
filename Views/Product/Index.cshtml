@@ -46,45 +46,67 @@ ViewData["Title"] = "Products";
         </div>
     </form>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Quantity in Stock</th>
-            <th>Low Stock Threshold</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var product in Model)
-        {
-        <tr>
-            <td>@product.Name</td>
-            <td>@product.Category?.Name</td>
-            <td>@product.Price.ToString("C")</td>
-            <td>
-                @product.QuantityInStock
-                @if (product.QuantityInStock <= product.LowStockThreshold)
-                {
-                <span class="badge bg-warning text-dark">Low Stock</span>
-                }
-            </td>
-            <td>@product.LowStockThreshold</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-sm btn-primary">Edit</a>
-                <a asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-sm btn-danger">Delete</a>
-            </td>
-        </tr>
-        }
-        </tbody>
-    </table>
+    @* Add a loader element (hidden by default) *@
+    <div id="loader" style="display: none; text-align: center; padding: 20px;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 
-    @if (!Model.Any())
+    @* Container for the product list partial view *@
+    <div id="productListContainer">
+        <partial name="_ProductListPartial" model="Model" />
+    </div>
+
+    @* Show Add button only for Admins *@
+    @if (User.IsInRole("Admin"))
     {
-    <div class="alert alert-info">No products found.</div>
+        <a asp-action="Create" class="btn btn-success mt-3">Add New Product</a>
     }
-
-    <a asp-action="Create" class="btn btn-success">Add New Product</a>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Target the search form
+            $('#searchForm').on('submit', function (e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                var form = $(this);
+                var url = form.attr('action'); // Get the form's action URL
+                var formData = form.serialize(); // Get form data as query string
+                var $productListContainer = $('#productListContainer');
+                var $loader = $('#loader');
+
+                // Show loader and hide current list
+                $loader.show();
+                $productListContainer.hide();
+
+                // Make AJAX GET request
+                $.ajax({
+                    url: url + '?' + formData, // Append form data to URL
+                    type: 'GET',
+                    headers: { "X-Requested-With": "XMLHttpRequest" }, // Identify as AJAX request
+                    success: function (result) {
+                        // Replace the content of the container with the partial view result
+                        $productListContainer.html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle errors (e.g., show an error message)
+                        console.error("AJAX Error:", status, error);
+                        // Optionally show a user-friendly error message in the container
+                        $productListContainer.html('<div class="alert alert-danger">Error loading products. Please try again.</div>');
+                    },
+                    complete: function () {
+                        // Hide loader and show updated list/error
+                        $loader.hide();
+                        $productListContainer.show();
+                    }
+                });
+            });
+
+             // Give the form an ID for easier selection
+             $('form[asp-action="Index"]').attr('id', 'searchForm');
+        });
+    </script>
+}

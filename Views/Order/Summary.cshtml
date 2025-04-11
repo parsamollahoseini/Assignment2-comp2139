@@ -7,9 +7,9 @@ ViewData["Title"] = "Order Summary";
 
 <div>
     <p><strong>Order ID:</strong> @Model.OrderId</p>
-    <p><strong>Guest Name:</strong> @Model.GuestName</p>
-    <p><strong>Guest Email:</strong> @Model.GuestEmail</p>
-    <p><strong>Order Date:</strong> @Model.OrderDate</p>
+    <p><strong>Customer Name:</strong> @Model.User.FullName</p> @* Changed from GuestName *@
+    <p><strong>Customer Email:</strong> @Model.User.Email</p> @* Changed from GuestEmail *@
+    <p><strong>Order Date:</strong> @Model.OrderDate.ToLocalTime()</p> @* Display in local time *@
 </div>
 
 <table class="table">
