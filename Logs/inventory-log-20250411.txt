@@ -1,0 +1,64 @@
+2025-04-11 12:33:57.773 -04:00 [INF] Starting web application
+2025-04-11 12:33:59.207 -04:00 [INF] Now listening on: http://localhost:5096
+2025-04-11 12:33:59.212 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-11 12:33:59.212 -04:00 [INF] Hosting environment: Development
+2025-04-11 12:33:59.212 -04:00 [INF] Content root path: /Users/parsamollahoseini/Desktop/assignment1-comp2139
+2025-04-11 12:33:59.610 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-04-11 12:40:12.049 -04:00 [INF] User logged in.
+2025-04-11 12:41:28.109 -04:00 [INF] Application is shutting down...
+2025-04-11 12:41:47.542 -04:00 [INF] Starting web application
+2025-04-11 12:41:48.845 -04:00 [INF] Now listening on: http://localhost:5096
+2025-04-11 12:41:48.852 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-11 12:41:48.852 -04:00 [INF] Hosting environment: Development
+2025-04-11 12:41:48.852 -04:00 [INF] Content root path: /Users/parsamollahoseini/Desktop/assignment1-comp2139
+2025-04-11 12:41:49.671 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-04-11 12:58:58.390 -04:00 [INF] Application is shutting down...
+2025-04-11 13:10:06.821 -04:00 [INF] Starting web application
+2025-04-11 13:10:08.175 -04:00 [INF] Now listening on: http://localhost:5096
+2025-04-11 13:10:08.182 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-11 13:10:08.182 -04:00 [INF] Hosting environment: Development
+2025-04-11 13:10:08.182 -04:00 [INF] Content root path: /Users/parsamollahoseini/Desktop/assignment1-comp2139
+2025-04-11 13:10:09.171 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-04-11 13:11:29.090 -04:00 [INF] User logged out.
+2025-04-11 13:12:12.302 -04:00 [INF] User created a new account with password.
+2025-04-11 13:12:12.816 -04:00 [INF] Email to syaleni@gmail.com queued successfully! Subject: Confirm your email
+2025-04-11 13:21:36.298 -04:00 [INF] User created a new account with password.
+2025-04-11 13:21:36.727 -04:00 [INF] Email to mollahoseinip@gmail.com queued successfully! Subject: Confirm your email
+2025-04-11 13:23:12.980 -04:00 [INF] Email to Mollahoseinip@gmail.com queued successfully! Subject: Reset Password
+2025-04-11 13:23:39.190 -04:00 [INF] Application is shutting down...
+2025-04-11 13:44:56.726 -04:00 [INF] Starting web application
+2025-04-11 13:44:58.523 -04:00 [INF] Now listening on: http://localhost:5096
+2025-04-11 13:44:58.530 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-11 13:44:58.530 -04:00 [INF] Hosting environment: Development
+2025-04-11 13:44:58.530 -04:00 [INF] Content root path: /Users/parsamollahoseini/Desktop/assignment1-comp2139
+2025-04-11 13:44:59.304 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-04-11 13:48:38.510 -04:00 [INF] User logged in.
+2025-04-11 13:54:01.720 -04:00 [INF] Application is shutting down...
+2025-04-11 13:54:19.886 -04:00 [INF] Starting web application
+2025-04-11 13:54:22.033 -04:00 [INF] Now listening on: http://localhost:5096
+2025-04-11 13:54:22.041 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-11 13:54:22.041 -04:00 [INF] Hosting environment: Development
+2025-04-11 13:54:22.041 -04:00 [INF] Content root path: /Users/parsamollahoseini/Desktop/assignment1-comp2139
+2025-04-11 13:54:22.496 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-04-11 13:55:04.269 -04:00 [INF] Application is shutting down...
+2025-04-11 14:04:14.742 -04:00 [INF] Starting web application
+2025-04-11 14:04:16.097 -04:00 [INF] Now listening on: http://localhost:5096
+2025-04-11 14:04:16.103 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-11 14:04:16.103 -04:00 [INF] Hosting environment: Development
+2025-04-11 14:04:16.103 -04:00 [INF] Content root path: /Users/parsamollahoseini/Desktop/assignment2-comp2139
+2025-04-11 14:04:17.244 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-04-11 14:04:20.795 -04:00 [WRN] The temp data cookie .AspNetCore.Mvc.CookieTempDataProvider could not be loaded.
+System.Security.Cryptography.CryptographicException: The payload was invalid. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+   at Microsoft.AspNetCore.DataProtection.Managed.ManagedAuthenticatedEncryptor.Decrypt(ArraySegment`1 protectedPayload, ArraySegment`1 additionalAuthenticatedData)
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingBasedDataProtector.UnprotectCore(Byte[] protectedData, Boolean allowOperationsOnRevokedKeys, UnprotectStatus& status)
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingBasedDataProtector.Unprotect(Byte[] protectedData)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.CookieTempDataProvider.LoadTempData(HttpContext context)
+2025-04-11 14:04:36.064 -04:00 [INF] User logged in.
+2025-04-11 14:05:33.863 -04:00 [INF] Application is shutting down...
+2025-04-11 14:35:55.439 -04:00 [INF] Starting web application
+2025-04-11 14:35:57.039 -04:00 [INF] Now listening on: http://localhost:5096
+2025-04-11 14:35:57.047 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-11 14:35:57.047 -04:00 [INF] Hosting environment: Development
+2025-04-11 14:35:57.047 -04:00 [INF] Content root path: /Users/parsamollahoseini/Desktop/assignment1-comp2139
+2025-04-11 14:35:57.511 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-04-11 14:36:20.846 -04:00 [INF] Application is shutting down...
