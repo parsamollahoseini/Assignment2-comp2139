@@ -40,9 +40,10 @@
                 </ul>
                 <!-- Add Login/Logout Partial View -->
                 <partial name="_LoginPartial" />
-                
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search products..." aria-label="Search">
+
+                <form class="d-flex" asp-controller="Product" asp-action="Index" method="get" role="search">
+                    @await Component.InvokeAsync("CategorySelect")
+                    <input class="form-control me-2" type="search" name="searchString" placeholder="Search products..." aria-label="Search">
                     <button class="btn btn-outline-light" type="submit">Search</button>
                 </form>
             </div>

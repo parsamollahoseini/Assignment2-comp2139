@@ -332,5 +332,21 @@ public async Task<IActionResult> Edit(int? id)
 
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+        
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
+        
+            if (product == null)
+                return NotFound();
+    
+            return View(product);
+        }
+        
+        
     }
 }

@@ -1,0 +1,117 @@
+@model SmartInventory.Models.Product
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-light p-2 rounded">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Product" asp-action="Index">Inventory</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0"><i class="fas fa-box-open me-2"></i>Product Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="p-4 bg-light rounded mb-3 text-center">
+                        <i class="fas fa-box fa-5x text-primary"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="mb-3">@Model.Name</h3>
+                    <p class="lead mb-0 text-muted">Category: <span class="badge bg-info">@Model.Category.Name</span></p>
+                    <hr />
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <p class="mb-0 text-muted">Price:</p>
+                            <h4 class="text-primary fw-bold">$@Model.Price.ToString("F2")</h4>
+                        </div>
+                        <div class="col-6">
+                            <p class="mb-0 text-muted">In Stock:</p>
+                            <h4>
+                                @if (Model.QuantityInStock <= Model.LowStockThreshold)
+                                {
+                                    <span class="badge bg-warning">Low Stock: @Model.QuantityInStock</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">@Model.QuantityInStock Available</span>
+                                }
+                            </h4>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <p class="mb-0 text-muted">Low Stock Threshold:</p>
+                            <p>@Model.LowStockThreshold</p>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-block">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-primary">
+                                <i class="fas fa-edit me-1"></i> Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.ProductId" class="btn btn-danger">
+                                <i class="fas fa-trash me-1"></i> Delete
+                            </a>
+                        }
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+            <h3 class="mb-0"><i class="fas fa-history me-2"></i>Stock History</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                This section could display stock level changes, recent orders containing this product, or other historical data.
+            </div>
+
+            <!-- Here you could add a table of stock changes or other product history -->
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Action</th>
+                    <th>Quantity Change</th>
+                    <th>User</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>@DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy")</td>
+                    <td><span class="badge bg-success">Stock Added</span></td>
+                    <td>+10</td>
+                    <td>System Admin</td>
+                </tr>
+                <tr>
+                    <td>@DateTime.Now.AddDays(-5).ToString("MM/dd/yyyy")</td>
+                    <td><span class="badge bg-danger">Stock Removed</span></td>
+                    <td>-2</td>
+                    <td>Order #12345</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
