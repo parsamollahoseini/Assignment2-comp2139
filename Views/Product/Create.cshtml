@@ -86,21 +86,23 @@ ViewData["Title"] = "Create Product";
                     },
                     success: function (response) {
                         if (response.success) {
-                            // Success: show message, clear form
+                            // Success: show message
                             $messageContainer.html('<div class="alert alert-success">' + response.message + '</div>').show();
-                            form.trigger('reset'); // Clear the form fields
-                            // Optionally redirect after a delay or provide a link
-                            // setTimeout(function() { window.location.href = '@Url.Action("Index")'; }, 2000);
+
+                            // Redirect to inventory page after a brief delay (to show the success message)
+                            setTimeout(function() {
+                                window.location.href = '@Url.Action("Index")';
+                            }, 1500);
                         } else {
                             // Failure (validation errors from server or general error)
                             var errorHtml = '<div class="alert alert-danger"><ul>';
                             if (response.errors) {
                                 $.each(response.errors, function (key, value) {
-                                     // Display field-specific errors near the fields (optional enhancement)
-                                     // For now, list all errors in the message container
-                                     $.each(value, function(i, errorMsg) {
-                                         errorHtml += '<li>' + errorMsg + '</li>';
-                                     });
+                                    // Display field-specific errors near the fields (optional enhancement)
+                                    // For now, list all errors in the message container
+                                    $.each(value, function(i, errorMsg) {
+                                        errorHtml += '<li>' + errorMsg + '</li>';
+                                    });
                                 });
                             } else {
                                 errorHtml += '<li>An unknown error occurred.</li>';
@@ -108,7 +110,7 @@ ViewData["Title"] = "Create Product";
                             errorHtml += '</ul></div>';
                             $messageContainer.html(errorHtml).show();
                         }
-                    },
+},
                     error: function (xhr, status, error) {
                         console.error("AJAX POST Error:", status, error, xhr.responseText);
                         $messageContainer.html('<div class="alert alert-danger">An error occurred while submitting the form. Please try again.</div>').show();

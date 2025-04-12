@@ -26,5 +26,5 @@ public class Product
     public int LowStockThreshold { get; set; }
 
     // Navigation property
-    public virtual Category Category { get; set; } = null!; // Initialize non-nullable navigation property
+    public virtual Category? Category { get; set; }
 }
